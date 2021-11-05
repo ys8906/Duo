@@ -1,0 +1,26 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  TargetRubyVersion: 3.0.2
+  NewCops: enable
+  Exclude:
+    - "db/**/*"
+    - "config/**/*"
+    - "node_modules/**/*"
+    - "spec/**/*"
+    - "bin/**/*"
+    - "vendor/**/*"
+
+# Library
+require:
+  - rubocop-rails
+  - rubocop-performance
+  - rubocop-graphql
+
+# Exceptions
+# クラス定義のすぐ下のコメント
+Style/Documentation:
+  Enabled: false
+# ruby3以降なので不要
+Style/FrozenStringLiteralComment:
+  Enabled: false

@@ -3,11 +3,11 @@
 #   https://dev.to/nilomiranda/ruby-grahql-generating-schema-definition-file-3k1c
 #   https://egghead.io/blog/rails-graphql-typescript-react-apollo
 
-require "graphql/rake_task"
-require "rake"
+require 'graphql/rake_task'
+require 'rake'
 
 GraphQL::RakeTask.new(
-  load_schema: -> (_task) {
+  load_schema: lambda { |_task|
     require_relative '../../app/graphql/duojo_schema'
     DuojoSchema
   }
@@ -15,6 +15,6 @@ GraphQL::RakeTask.new(
 
 namespace :graphql do
   task export: :environment do
-    Rake::Task["graphql:schema:dump"].invoke
+    Rake::Task['graphql:schema:dump'].invoke
   end
 end

@@ -1,8 +1,10 @@
 module Types
   class BookType < Types::BaseObject
-    field :id, ID, null: false
-    field :title, String, null: true
-    field :created_at, GraphQL::Types::ISO8601DateTime, null: false
-    field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
+    description 'Books'
+
+    field :created_at, GraphQL::Types::ISO8601DateTime, 'created_at', null: false
+    field :id, ID, 'id', null: false
+    field :title, String, 'title', null: true
+    field :updated_at, GraphQL::Types::ISO8601DateTime, 'updated_at', null: false
   end
 end

@@ -1,9 +1,8 @@
-import * as React from 'react'
-import '../graphql/types'
-import { withProvider } from '../graphqlProvider'
-import { AllBooksQuery, useAllBooksQuery } from '../graphql/types'
-import gql from 'graphql-tag'
-import { useQuery } from '@apollo/client'
+import * as React from "react"
+import { gql, useQuery } from "@apollo/client"
+import { AllBooksQuery } from "../graphql/types"
+import withProvider from "../graphqlProvider"
+
 const booksQuery = gql`
   query allBooks {
     books {
@@ -13,16 +12,16 @@ const booksQuery = gql`
   }
 `
 
-type HelloProps = {
-  title?: string
-}
+const Book: React.FunctionComponent<{ title?: String }> = ({ title }) => (
+  <li>{title}</li>
+)
 
-const Book: React.FunctionComponent<HelloProps> = ({title}) => {
-  return <li>{title}</li>
+Book.defaultProps = {
+  title: "title",
 }
 
 const Books = () => {
-  const {data, loading, error} = useQuery<AllBooksQuery>(booksQuery)
+  const { data, loading } = useQuery<AllBooksQuery>(booksQuery)
 
   if (loading) {
     return <span>Loading...</span>
@@ -33,7 +32,7 @@ const Books = () => {
       <h1>Books</h1>
       <ul>
         {data.books.map((book) => (
-          <Book {...book} key={book.id} />
+          <Book title={book.title} key={book.id} />
         ))}
       </ul>
     </div>

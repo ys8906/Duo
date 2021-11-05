@@ -1,2 +1,2 @@
 app: bin/rails s -b 0.0.0.0 -p 3055
-webpacker: bin/webpack-dev-server
+webpack: WEBPACKER_DEV_SERVER_HOST=0.0.0.0 WEBPACKER_DEV_SERVER_PUBLIC=127.0.0.1:3035 WEBPACKER_DEV_SERVER_PORT=3035 ./bin/webpack-dev-server

@@ -34,5 +34,8 @@ module Duojo
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    # ref: https://github.com/reactjs/react-rails#get-started-with-webpacker
+    config.react.server_renderer_extensions = ["jsx", "js", "tsx", "ts"]
   end
 end

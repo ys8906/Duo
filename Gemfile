@@ -23,6 +23,7 @@ gem 'webpacker', '~> 5.0'
 gem 'bootsnap', '>= 1.4.4', require: false
 
 gem 'react-rails', '~> 2.6', '>= 2.6.1'
+gem 'graphql', '~> 1.12', '>= 1.12.18'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

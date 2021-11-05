@@ -2,6 +2,7 @@
   "name": "duojo",
   "private": true,
   "dependencies": {
+    "@apollo/client": "^3.4.16",
     "@babel/preset-react": "^7.16.0",
     "@babel/preset-typescript": "^7.16.0",
     "@rails/actioncable": "^6.0.0",
@@ -10,6 +11,7 @@
     "@rails/webpacker": "5.4.3",
     "@types/react": "^17.0.34",
     "@types/react-dom": "^17.0.11",
+    "graphql": "^16.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react_ujs": "^2.6.1",
@@ -19,6 +21,13 @@
   },
   "version": "0.1.0",
   "devDependencies": {
-    "webpack-dev-server": "^3"
+    "@graphql-codegen/cli": "2.2.2",
+    "webpack-dev-server": "^3",
+    "@graphql-codegen/typescript": "2.3.0",
+    "@graphql-codegen/typescript-react-apollo": "3.2.0",
+    "@graphql-codegen/typescript-operations": "2.2.0"
+  },
+  "scripts": {
+    "gql:codegen": "graphql-codegen --config codegen.yml"
   }
 }

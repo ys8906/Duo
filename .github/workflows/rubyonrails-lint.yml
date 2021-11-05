@@ -9,11 +9,11 @@ on:
   push:
     branches:
       - "**"
-  pull_request:
-    branches: [master]
 
 env:
   DATABASE_URL: postgres://postgres:postgres@localhost:5432
+  BUNDLE_JOBS: 4
+  BUNDLE_RETRY: 3
   RAILS_ENV: test
   RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
 
@@ -55,6 +55,9 @@ jobs:
       - name: Yarn install
         run: |
           yarn install
+      - name: Update GraphQL
+        run: |
+          bundle exec rake graphql:export && yarn gql:codegen
       - name: Run linters
         run: |
           bundle exec rubocop --parallel

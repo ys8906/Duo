@@ -2,7 +2,7 @@
 ## Frontend
 - React 17.0.2
 - TypeScript 4.4.4
-- Apollo Client
+- Apollo Client 3.4.16
 
 ## Backend
 - Ruby 3.0.2

@@ -1,0 +1,68 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+# This workflow will download a prebuilt Ruby version, install dependencies, and  run linters
+name: Rails - Install dependencies and run linters
+
+on:
+  push:
+    branches:
+      - "**"
+
+env:
+  DATABASE_URL: postgres://postgres:postgres@localhost:5432
+  BUNDLE_JOBS: 4
+  BUNDLE_RETRY: 3
+  RAILS_ENV: test
+  RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+
+jobs:
+  run-lint:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:14.0
+        ports: ["5432:5432"]
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Ruby and install gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Bundle install
+        run: |
+          bundle config path /home/runner/bundle
+          bundle config set frozen 'true'
+          bundle install
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - uses: actions/cache@v1
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            yarn-
+      - name: Yarn install
+        run: |
+          yarn install
+      - name: Update GraphQL
+        run: |
+          bundle exec rake graphql:export && yarn gql:codegen
+      - name: Run linters
+        run: |
+          bundle exec rubocop --parallel
+      - name: Run RSpec
+        run: |
+          bundle exec rails db:prepare
+          bundle exec rails webpacker:compile
+          bundle exec rspec

@@ -1,24 +1,20 @@
-# README
+# Dependencies
+## Frontend
+- React 17.0.2
+- TypeScript 4.4.4
+- Apollo Client
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Backend
+- Ruby 3.0.2
+- Rails 6.1.4
+- PostgresSQL 14.0
+- GraphQL Ruby 1.12.18
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+# Setup
+Share credentials beforehand
+```
+$ docker-compose build
+$ docker-compose up
+$ docker-compose run web rake db:create
+$ docker-compose run web rake db:migrate
+```

@@ -7,14 +7,14 @@ AllCops:
     - "db/**/*"
     - "config/**/*"
     - "node_modules/**/*"
-    - "spec/**/*"
     - "bin/**/*"
     - "vendor/**/*"
 
 # Library
 require:
-  - rubocop-rails
   - rubocop-performance
+  - rubocop-rails
+  - rubocop-rspec
   - rubocop-graphql
 
 # Exceptions

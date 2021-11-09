@@ -23,86 +23,97 @@ export type Scalars = {
   ISO8601DateTime: any
 }
 
-export type Book = {
-  __typename?: "Book"
-  createdAt: Scalars["ISO8601DateTime"]
-  id: Scalars["ID"]
-  title?: Maybe<Scalars["String"]>
-  updatedAt: Scalars["ISO8601DateTime"]
-}
-
+/** Mutation */
 export type Mutation = {
   __typename?: "Mutation"
   /** An example field added by the generator */
   testField: Scalars["String"]
 }
 
+/** Query */
 export type Query = {
   __typename?: "Query"
-  books: Array<Book>
+  /** Returns all sentences */
+  sentences: Array<Sentence>
 }
 
-export type AllBooksQueryVariables = Exact<{ [key: string]: never }>
+/** Sentence */
+export type Sentence = {
+  __typename?: "Sentence"
+  /** created_at */
+  createdAt: Scalars["ISO8601DateTime"]
+  /** Sentence in English */
+  english: Scalars["String"]
+  /** id */
+  id: Scalars["ID"]
+  /** Sentence in Japanese */
+  japanese: Scalars["String"]
+  /** updated_at */
+  updatedAt: Scalars["ISO8601DateTime"]
+}
 
-export type AllBooksQuery = {
+export type AllSentencesQueryVariables = Exact<{ [key: string]: never }>
+
+export type AllSentencesQuery = {
   __typename?: "Query"
-  books: Array<{
-    __typename?: "Book"
-    id: string
-    title?: string | null | undefined
-  }>
+  sentences: Array<{ __typename?: "Sentence"; id: string; japanese: string }>
 }
 
-export const AllBooksDocument = gql`
-  query allBooks {
-    books {
+export const AllSentencesDocument = gql`
+  query allSentences {
+    sentences {
       id
-      title
+      japanese
     }
   }
 `
 
 /**
- * __useAllBooksQuery__
+ * __useAllSentencesQuery__
  *
- * To run a query within a React component, call `useAllBooksQuery` and pass it any options that fit your needs.
- * When your component renders, `useAllBooksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useAllSentencesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllSentencesQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useAllBooksQuery({
+ * const { data, loading, error } = useAllSentencesQuery({
  *   variables: {
  *   },
  * });
  */
-export function useAllBooksQuery(
-  baseOptions?: Apollo.QueryHookOptions<AllBooksQuery, AllBooksQueryVariables>
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<AllBooksQuery, AllBooksQueryVariables>(
-    AllBooksDocument,
-    options
-  )
-}
-export function useAllBooksLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    AllBooksQuery,
-    AllBooksQueryVariables
+export function useAllSentencesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    AllSentencesQuery,
+    AllSentencesQueryVariables
   >
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<AllBooksQuery, AllBooksQueryVariables>(
-    AllBooksDocument,
+  return Apollo.useQuery<AllSentencesQuery, AllSentencesQueryVariables>(
+    AllSentencesDocument,
     options
   )
 }
-export type AllBooksQueryHookResult = ReturnType<typeof useAllBooksQuery>
-export type AllBooksLazyQueryHookResult = ReturnType<
-  typeof useAllBooksLazyQuery
+export function useAllSentencesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    AllSentencesQuery,
+    AllSentencesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<AllSentencesQuery, AllSentencesQueryVariables>(
+    AllSentencesDocument,
+    options
+  )
+}
+export type AllSentencesQueryHookResult = ReturnType<
+  typeof useAllSentencesQuery
 >
-export type AllBooksQueryResult = Apollo.QueryResult<
-  AllBooksQuery,
-  AllBooksQueryVariables
+export type AllSentencesLazyQueryHookResult = ReturnType<
+  typeof useAllSentencesLazyQuery
+>
+export type AllSentencesQueryResult = Apollo.QueryResult<
+  AllSentencesQuery,
+  AllSentencesQueryVariables
 >

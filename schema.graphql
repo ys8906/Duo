@@ -1,15 +1,11 @@
-type Book {
-  createdAt: ISO8601DateTime!
-  id: ID!
-  title: String
-  updatedAt: ISO8601DateTime!
-}
-
 """
 An ISO 8601-encoded datetime
 """
 scalar ISO8601DateTime
 
+"""
+Mutation
+"""
 type Mutation {
   """
   An example field added by the generator
@@ -17,6 +13,42 @@ type Mutation {
   testField: String!
 }
 
+"""
+Query
+"""
 type Query {
-  books: [Book!]!
+  """
+  Returns all sentences
+  """
+  sentences: [Sentence!]!
+}
+
+"""
+Sentence
+"""
+type Sentence {
+  """
+  created_at
+  """
+  createdAt: ISO8601DateTime!
+
+  """
+  Sentence in English
+  """
+  english: String!
+
+  """
+  id
+  """
+  id: ID!
+
+  """
+  Sentence in Japanese
+  """
+  japanese: String!
+
+  """
+  updated_at
+  """
+  updatedAt: ISO8601DateTime!
 }

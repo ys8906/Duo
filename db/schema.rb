@@ -10,15 +10,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_05_084027) do
+ActiveRecord::Schema.define(version: 2021_11_09_095012) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "books", force: :cascade do |t|
-    t.string "title"
+  create_table "sections", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "sentences", force: :cascade do |t|
+    t.bigint "section_id", null: false
+    t.string "english", null: false
+    t.string "japanese", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["section_id"], name: "index_sentences_on_section_id"
+  end
+
+  create_table "words", force: :cascade do |t|
+    t.bigint "sentence_id", null: false
+    t.string "english", null: false
+    t.string "japanese", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["sentence_id"], name: "index_words_on_sentence_id"
+  end
+
+  add_foreign_key "sentences", "sections"
+  add_foreign_key "words", "sentences"
 end

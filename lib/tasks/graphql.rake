@@ -1,5 +1,4 @@
-# TODO: generate with CI
-#   rake graphql:export && yarn gql:codegen
+# rake graphql:export && yarn gql:codegen
 #   https://dev.to/nilomiranda/ruby-grahql-generating-schema-definition-file-3k1c
 #   https://egghead.io/blog/rails-graphql-typescript-react-apollo
 

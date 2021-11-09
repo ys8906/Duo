@@ -60,7 +60,8 @@ jobs:
           bundle exec rake graphql:export && yarn gql:codegen
       - name: Run linters
         run: |
-          bundle exec rubocop --parallel
+          options=" -E -S --format simple"
+          bundle exec rubocop --parallel --format files | xargs -I XXX_REPLACE bash -c 'bundle exec rubocop -a ${options} XXX_REPLACE'
       - name: Run RSpec
         run: |
           bundle exec rails db:prepare

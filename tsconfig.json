@@ -12,7 +12,8 @@
     "noEmit": true,
     "typeRoots": [
       "types",
-    ]
+    ],
+    "allowSyntheticDefaultImports": true
   },
   "exclude": [
     "**/*.spec.ts",

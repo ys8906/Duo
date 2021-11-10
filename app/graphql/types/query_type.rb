@@ -2,9 +2,9 @@ module Types
   class QueryType < Types::BaseObject
     description 'Query'
 
-    field :sentences, [Types::SentenceType], 'Returns all sentences', null: false
+    field :sentences, [Types::Objects::SentenceType], 'Returns all sentences', null: false
     def sentences
-      Sentence.all
+      Sentence.preload(:words)
     end
   end
 end

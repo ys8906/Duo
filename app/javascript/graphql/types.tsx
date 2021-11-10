@@ -48,6 +48,25 @@ export type Sentence = {
   id: Scalars["ID"]
   /** Sentence in Japanese */
   japanese: Scalars["String"]
+  /** Section id */
+  sectionId: Scalars["Int"]
+  /** updated_at */
+  updatedAt: Scalars["ISO8601DateTime"]
+  /** Words in the sentence */
+  words: Array<Word>
+}
+
+/** Word */
+export type Word = {
+  __typename?: "Word"
+  /** created_at */
+  createdAt: Scalars["ISO8601DateTime"]
+  /** Word in English */
+  english: Scalars["String"]
+  /** id */
+  id: Scalars["ID"]
+  /** Word in Japanese */
+  japanese: Scalars["String"]
   /** updated_at */
   updatedAt: Scalars["ISO8601DateTime"]
 }
@@ -56,14 +75,33 @@ export type AllSentencesQueryVariables = Exact<{ [key: string]: never }>
 
 export type AllSentencesQuery = {
   __typename?: "Query"
-  sentences: Array<{ __typename?: "Sentence"; id: string; japanese: string }>
+  sentences: Array<{
+    __typename?: "Sentence"
+    id: string
+    sectionId: number
+    english: string
+    japanese: string
+    words: Array<{
+      __typename?: "Word"
+      id: string
+      japanese: string
+      english: string
+    }>
+  }>
 }
 
 export const AllSentencesDocument = gql`
   query allSentences {
     sentences {
       id
+      sectionId
+      english
       japanese
+      words {
+        id
+        japanese
+        english
+      }
     }
   }
 `

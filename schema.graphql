@@ -48,6 +48,46 @@ type Sentence {
   japanese: String!
 
   """
+  Section id
+  """
+  sectionId: Int!
+
+  """
+  updated_at
+  """
+  updatedAt: ISO8601DateTime!
+
+  """
+  Words in the sentence
+  """
+  words: [Word!]!
+}
+
+"""
+Word
+"""
+type Word {
+  """
+  created_at
+  """
+  createdAt: ISO8601DateTime!
+
+  """
+  Word in English
+  """
+  english: String!
+
+  """
+  id
+  """
+  id: ID!
+
+  """
+  Word in Japanese
+  """
+  japanese: String!
+
+  """
   updated_at
   """
   updatedAt: ISO8601DateTime!

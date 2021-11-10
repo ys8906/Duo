@@ -1,0 +1,42 @@
+.sentence {
+  margin-bottom: 32px;
+  font-size: 24px;
+  font-weight: bold;
+
+  &__index {
+    padding: 16px 64px 16px 32px;
+    color: $primary;
+  }
+
+  &__english {
+    padding: 16px 16px 16px 64px;
+    background-color: $p-light;
+    color: $white;
+  }
+
+  &__japanese {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 16px 16px 64px;
+  }
+
+  &__toggle {
+    margin-left: 8px;
+  }
+
+  &__words {
+    padding: 24px 24px 24px 96px;
+    background-color: $gray-300;
+
+    &--row {
+      display: flex;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    &--left {
+      width: 240px;
+    }
+  }
+}

@@ -2,25 +2,25 @@ import * as React from "react"
 import { gql, useQuery } from "@apollo/client"
 import { AllSentencesQuery } from "../graphql/types"
 import withProvider from "../graphqlProvider"
+import Sentence from "./Sentence"
 
 const sentencesQuery = gql`
   query allSentences {
     sentences {
       id
+      sectionId
+      english
       japanese
+      words {
+        id
+        japanese
+        english
+      }
     }
   }
 `
 
-const Sentence: React.FC<{ japanese?: String }> = ({ japanese }) => (
-  <li>{japanese}</li>
-)
-
-Sentence.defaultProps = {
-  japanese: "japanese",
-}
-
-const Sentences = () => {
+const SentencesIndex = () => {
   const { data, loading } = useQuery<AllSentencesQuery>(sentencesQuery)
 
   if (loading) {
@@ -29,14 +29,11 @@ const Sentences = () => {
 
   return (
     <div>
-      <h1>Sentences</h1>
-      <ul>
-        {data.sentences.map((sentence) => (
-          <Sentence japanese={sentence.japanese} key={sentence.id} />
-        ))}
-      </ul>
+      {data.sentences.map((sentence) => (
+        <Sentence sentence={sentence} key={sentence.id} />
+      ))}
     </div>
   )
 }
 
-export default withProvider(Sentences)
+export default withProvider(SentencesIndex)

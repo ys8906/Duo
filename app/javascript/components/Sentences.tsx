@@ -12,9 +12,9 @@ const sentencesQuery = gql`
   }
 `
 
-const Sentence: React.FunctionComponent<{ japanese?: String }> = ({
-  japanese,
-}) => <li>{japanese}</li>
+const Sentence: React.FC<{ japanese?: String }> = ({ japanese }) => (
+  <li>{japanese}</li>
+)
 
 Sentence.defaultProps = {
   japanese: "japanese",

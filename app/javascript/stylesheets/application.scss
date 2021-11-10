@@ -20,7 +20,20 @@ $error: #ff5252;
 $success: #4caf50;
 $warning: #ffc107;
 
-.title {
-  font-size: 24px;
-  color: aqua;
+/*
+* Common
+*/
+a {
+  text-decoration: none;
+
+  &:visited {
+    color: inherit;
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
 }
+
+@import "header.scss";
+@import "body-wrapper.scss";

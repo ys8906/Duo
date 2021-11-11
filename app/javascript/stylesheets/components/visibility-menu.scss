@@ -1,0 +1,16 @@
+.visibility-menu {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  background-color: $gray-600;
+  padding: 8px 24px;
+  font-size: 24px;
+  color: $white;
+
+  &__checkbox {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+  }
+}

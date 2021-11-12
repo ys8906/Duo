@@ -23,6 +23,11 @@ $warning: #ffc107;
 /*
 * Common
 */
+
+body {
+  color: $black;
+}
+
 a {
   text-decoration: none;
 
@@ -35,5 +40,38 @@ a {
   }
 }
 
-@import "header.scss";
+button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  padding: 0;
+  appearance: none;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+input:focus {
+  outline: none;
+}
+
+ul,
+li {
+  padding: 0;
+  list-style: none;
+}
+
 @import "body-wrapper.scss";
+@import "components/header.scss";
+@import "components/sentence.scss";
+@import "components/sentence-wrapper.scss";
+@import "components/visibility-menu.scss";
+@import "components/search-box.scss";
+@import "components/utilities/loading.scss";
+@import "components/utilities/pagination.scss";

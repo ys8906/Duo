@@ -14,13 +14,33 @@ type Mutation {
 }
 
 """
+Pagination data
+"""
+type PageInfo {
+  """
+  Kaminari method current_page
+  """
+  currentPage: Int!
+
+  """
+  Kaminari method total_pages
+  """
+  totalPages: Int!
+}
+
+"""
 Query
 """
 type Query {
   """
-  Returns all sentences
+  Sentence index page
   """
-  sentences: [Sentence!]!
+  sentences(
+    """
+    Filering with the search box
+    """
+    attributes: SentenceSearchAttributes!
+  ): Sentences!
 }
 
 """
@@ -44,6 +64,96 @@ type Sentence {
 
   """
   Sentence in Japanese
+  """
+  japanese: String!
+
+  """
+  Section id
+  """
+  sectionId: Int!
+
+  """
+  updated_at
+  """
+  updatedAt: ISO8601DateTime!
+
+  """
+  Words in the sentence
+  """
+  words: [Word!]!
+}
+
+"""
+Attributes for filtering and sorting sentences
+"""
+input SentenceSearchAttributes {
+  """
+  current_page
+  """
+  currentPage: Int
+
+  """
+  id_max
+  """
+  idMax: Int
+
+  """
+  id_min
+  """
+  idMin: Int
+
+  """
+  keywords
+  """
+  keywords: String
+
+  """
+  section_id_max
+  """
+  sectionIdMax: Int
+
+  """
+  section_id_min
+  """
+  sectionIdMin: Int
+}
+
+"""
+Sentence
+"""
+type Sentences {
+  """
+  Pagination data
+  """
+  pageInfo: PageInfo
+
+  """
+  Sentences
+  """
+  sentences: [Sentence!]!
+}
+
+"""
+Word
+"""
+type Word {
+  """
+  created_at
+  """
+  createdAt: ISO8601DateTime!
+
+  """
+  Word in English
+  """
+  english: String!
+
+  """
+  id
+  """
+  id: ID!
+
+  """
+  Word in Japanese
   """
   japanese: String!
 

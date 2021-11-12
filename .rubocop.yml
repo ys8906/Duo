@@ -3,6 +3,7 @@ inherit_from: .rubocop_todo.yml
 AllCops:
   TargetRubyVersion: 3.0.2
   NewCops: enable
+  SuggestExtensions: false
   Exclude:
     - "db/**/*"
     - "config/**/*"
@@ -14,7 +15,6 @@ AllCops:
 require:
   - rubocop-performance
   - rubocop-rails
-  - rubocop-rspec
   - rubocop-graphql
 
 # Exceptions
@@ -23,4 +23,12 @@ Style/Documentation:
   Enabled: false
 # ruby3以降なので不要
 Style/FrozenStringLiteralComment:
+  Enabled: false
+# 無理がある
+Metrics/BlockLength:
+  Exclude:
+    - "spec/**/*"
+# rubocop-graphqlのバグ
+#   https://github.com/DmitryTsepelev/rubocop-graphql/issues/47
+GraphQL/ExtractInputType:
   Enabled: false

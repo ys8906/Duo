@@ -41,7 +41,9 @@ const Sentence: React.FC<SentenceProps> = ({ sentence, visibilities }) => {
 
   const showTextOrHidden = (text, textType, language) => {
     const state = language === "english" ? `${textType}En` : `${textType}Jp`
-    return visibilities[state] ? text[language] : "XXXXXXXXXX"
+    return visibilities[state]
+      ? text[language].replace("\\n", "\n")
+      : "XXXXXXXXXX"
   }
 
   return (

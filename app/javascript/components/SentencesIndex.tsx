@@ -1,13 +1,14 @@
-import React, { useState, useCallback } from "react"
-import { gql, useQuery } from "@apollo/client"
-import { AllSentencesQuery } from "../graphql/types"
+import React, { useState, useEffect, useCallback } from "react"
+import { gql, useLazyQuery } from "@apollo/client"
+import { AllSentencesQuery, AllSentencesQueryVariables } from "../graphql/types"
 import withProvider from "../graphqlProvider"
-import Sentence from "./Sentence"
 import VisibilityMenu from "./VisiblityMenu"
+import SearchBox from "./SearchBox"
+import SentenceWrapper from "./SentenceWrapper"
 
 const sentencesQuery = gql`
-  query allSentences {
-    sentences {
+  query allSentences($attributes: SentenceSearchAttributes!) {
+    sentences(attributes: $attributes) {
       id
       sectionId
       english
@@ -22,8 +23,68 @@ const sentencesQuery = gql`
 `
 
 const SentencesIndex = () => {
-  const { data, loading } = useQuery<AllSentencesQuery>(sentencesQuery)
+  /**
+   * Query attributes
+   */
+  // OPTIMIZE: use object for attributes
+  //  ? avoid infinite loops
+  const [sectionIdMin, setSectionIdMin] = useState("")
+  const [sectionIdMax, setSectionIdMax] = useState("")
+  const [idMin, setIdMin] = useState("")
+  const [idMax, setIdMax] = useState("")
+  const [keywords, setKeywords] = useState("")
+  const handleAttributes = (e) => {
+    switch (e.target.name) {
+      case "sectionIdMin":
+        setSectionIdMin(e.target.value)
+        break
+      case "sectionIdMax":
+        setSectionIdMax(e.target.value)
+        break
+      case "idMin":
+        setIdMin(e.target.value)
+        break
+      case "idMax":
+        setIdMax(e.target.value)
+        break
+      case "keywords":
+        setKeywords(e.target.value)
+        break
+      default:
+        break
+    }
+  }
 
+  /**
+   * Load query
+   */
+  const [getSentences, { loading, error, data }] = useLazyQuery<
+    AllSentencesQuery,
+    AllSentencesQueryVariables
+  >(sentencesQuery)
+  const fetchSentences = (e = null) => {
+    // OPTIMIZE: click once to reset and refetch at the same time
+    if (e && e.target.value === "true") {
+      setSectionIdMin("")
+      setSectionIdMax("")
+      setIdMin("")
+      setIdMax("")
+      setKeywords("")
+    }
+    getSentences({
+      variables: {
+        attributes: { sectionIdMin, sectionIdMax, idMin, idMax, keywords },
+      },
+    })
+  }
+
+  // use only on componentDidMount, componentWillUnmount
+  // https://ja.reactjs.org/docs/hooks-reference.html#conditionally-firing-an-effect
+  useEffect(() => fetchSentences(), [])
+
+  /**
+   * Handle content options (visibility)
+   */
   const buttonLabels = [
     { name: "sentenceEn", label: "Sentences" },
     { name: "sentenceJp", label: "例文" },
@@ -44,15 +105,20 @@ const SentencesIndex = () => {
     }))
   }, [])
 
-  if (loading) {
-    return <span>Loading...</span>
-  }
-
   return (
     <div>
-      {data.sentences.map((sentence) => (
-        <Sentence key={sentence.id} {...{ sentence, visibilities }} />
-      ))}
+      <SearchBox
+        {...{
+          sectionIdMin,
+          sectionIdMax,
+          idMin,
+          idMax,
+          keywords,
+          handleAttributes,
+          fetchSentences,
+        }}
+      />
+      <SentenceWrapper {...{ loading, error, data, visibilities }} />
       <VisibilityMenu {...{ buttonLabels, visibilities, toggleVisibility }} />
     </div>
   )

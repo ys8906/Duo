@@ -18,9 +18,14 @@ Query
 """
 type Query {
   """
-  Returns all sentences
+  Sentence index page
   """
-  sentences: [Sentence!]!
+  sentences(
+    """
+    Filering with the search box
+    """
+    attributes: SentenceSearchAttributes!
+  ): [Sentence!]!
 }
 
 """
@@ -61,6 +66,36 @@ type Sentence {
   Words in the sentence
   """
   words: [Word!]!
+}
+
+"""
+Attributes for filtering and sorting sentences
+"""
+input SentenceSearchAttributes {
+  """
+  id_max
+  """
+  idMax: String
+
+  """
+  id_min
+  """
+  idMin: String
+
+  """
+  keywords
+  """
+  keywords: String
+
+  """
+  section_id_max
+  """
+  sectionIdMax: String
+
+  """
+  section_id_min
+  """
+  sectionIdMin: String
 }
 
 """

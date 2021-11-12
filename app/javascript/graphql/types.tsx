@@ -33,8 +33,13 @@ export type Mutation = {
 /** Query */
 export type Query = {
   __typename?: "Query"
-  /** Returns all sentences */
+  /** Sentence index page */
   sentences: Array<Sentence>
+}
+
+/** Query */
+export type QuerySentencesArgs = {
+  attributes: SentenceSearchAttributes
 }
 
 /** Sentence */
@@ -56,6 +61,20 @@ export type Sentence = {
   words: Array<Word>
 }
 
+/** Attributes for filtering and sorting sentences */
+export type SentenceSearchAttributes = {
+  /** id_max */
+  idMax?: Maybe<Scalars["String"]>
+  /** id_min */
+  idMin?: Maybe<Scalars["String"]>
+  /** keywords */
+  keywords?: Maybe<Scalars["String"]>
+  /** section_id_max */
+  sectionIdMax?: Maybe<Scalars["String"]>
+  /** section_id_min */
+  sectionIdMin?: Maybe<Scalars["String"]>
+}
+
 /** Word */
 export type Word = {
   __typename?: "Word"
@@ -71,7 +90,9 @@ export type Word = {
   updatedAt: Scalars["ISO8601DateTime"]
 }
 
-export type AllSentencesQueryVariables = Exact<{ [key: string]: never }>
+export type AllSentencesQueryVariables = Exact<{
+  attributes: SentenceSearchAttributes
+}>
 
 export type AllSentencesQuery = {
   __typename?: "Query"
@@ -91,8 +112,8 @@ export type AllSentencesQuery = {
 }
 
 export const AllSentencesDocument = gql`
-  query allSentences {
-    sentences {
+  query allSentences($attributes: SentenceSearchAttributes!) {
+    sentences(attributes: $attributes) {
       id
       sectionId
       english
@@ -118,11 +139,12 @@ export const AllSentencesDocument = gql`
  * @example
  * const { data, loading, error } = useAllSentencesQuery({
  *   variables: {
+ *      attributes: // value for 'attributes'
  *   },
  * });
  */
 export function useAllSentencesQuery(
-  baseOptions?: Apollo.QueryHookOptions<
+  baseOptions: Apollo.QueryHookOptions<
     AllSentencesQuery,
     AllSentencesQueryVariables
   >

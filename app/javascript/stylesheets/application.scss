@@ -49,7 +49,22 @@ button {
   appearance: none;
 }
 
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+input:focus {
+  outline: none;
+}
+
 @import "body-wrapper.scss";
 @import "components/header.scss";
 @import "components/sentence.scss";
+@import "components/sentence-wrapper.scss";
 @import "components/visibility-menu.scss";
+@import "components/search-box.scss";
+@import "components/utilities/loading.scss";

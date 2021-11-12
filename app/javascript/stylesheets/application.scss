@@ -61,6 +61,12 @@ input:focus {
   outline: none;
 }
 
+ul,
+li {
+  padding: 0;
+  list-style: none;
+}
+
 @import "body-wrapper.scss";
 @import "components/header.scss";
 @import "components/sentence.scss";
@@ -68,3 +74,4 @@ input:focus {
 @import "components/visibility-menu.scss";
 @import "components/search-box.scss";
 @import "components/utilities/loading.scss";
+@import "components/utilities/pagination.scss";

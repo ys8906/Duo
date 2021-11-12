@@ -1,6 +1,7 @@
 import { ApolloError } from "@apollo/client"
 import React from "react"
 import { AllSentencesQuery } from "../graphql/types"
+import Pagination from "./Pagination"
 import Sentence from "./Sentence"
 import Loading from "./utilities/Loading"
 
@@ -9,6 +10,8 @@ interface Props {
   error: ApolloError
   data: AllSentencesQuery
   visibilities: object
+  currentPage: number
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>
 }
 
 const SentenceWrapper: React.FC<Props> = ({
@@ -16,6 +19,8 @@ const SentenceWrapper: React.FC<Props> = ({
   error,
   data,
   visibilities,
+  currentPage,
+  setCurrentPage,
 }) => {
   let mainComponent
   if (loading) {
@@ -23,12 +28,13 @@ const SentenceWrapper: React.FC<Props> = ({
   } else if (error) {
     mainComponent = <div className="error">Error</div>
   } else if (data) {
-    if (data.sentences.length) {
+    if (data.sentences.sentences.length) {
       mainComponent = (
         <div>
-          {data.sentences.map((sentence) => (
+          {data.sentences.sentences.map((sentence) => (
             <Sentence key={sentence.id} {...{ sentence, visibilities }} />
           ))}
+          <Pagination {...{ data, currentPage, setCurrentPage }} />
         </div>
       )
     } else

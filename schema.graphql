@@ -14,6 +14,21 @@ type Mutation {
 }
 
 """
+Pagination data
+"""
+type PageInfo {
+  """
+  Kaminari method current_page
+  """
+  currentPage: Int!
+
+  """
+  Kaminari method total_pages
+  """
+  totalPages: Int!
+}
+
+"""
 Query
 """
 type Query {
@@ -25,7 +40,7 @@ type Query {
     Filering with the search box
     """
     attributes: SentenceSearchAttributes!
-  ): [Sentence!]!
+  ): Sentences!
 }
 
 """
@@ -73,14 +88,19 @@ Attributes for filtering and sorting sentences
 """
 input SentenceSearchAttributes {
   """
+  current_page
+  """
+  currentPage: Int
+
+  """
   id_max
   """
-  idMax: String
+  idMax: Int
 
   """
   id_min
   """
-  idMin: String
+  idMin: Int
 
   """
   keywords
@@ -90,12 +110,27 @@ input SentenceSearchAttributes {
   """
   section_id_max
   """
-  sectionIdMax: String
+  sectionIdMax: Int
 
   """
   section_id_min
   """
-  sectionIdMin: String
+  sectionIdMin: Int
+}
+
+"""
+Sentence
+"""
+type Sentences {
+  """
+  Pagination data
+  """
+  pageInfo: PageInfo
+
+  """
+  Sentences
+  """
+  sentences: [Sentence!]!
 }
 
 """

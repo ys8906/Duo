@@ -82,6 +82,55 @@
         },
         {
           "kind": "OBJECT",
+          "name": "PageInfo",
+          "description": "Pagination data",
+          "fields": [
+            {
+              "name": "currentPage",
+              "description": "Kaminari method current_page",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "totalPages",
+              "description": "Kaminari method total_pages",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [
+
+          ],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
           "name": "Query",
           "description": "Query",
           "fields": [
@@ -110,17 +159,9 @@
                 "kind": "NON_NULL",
                 "name": null,
                 "ofType": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "OBJECT",
-                      "name": "Sentence",
-                      "ofType": null
-                    }
-                  }
+                  "kind": "OBJECT",
+                  "name": "Sentences",
+                  "ofType": null
                 }
               },
               "isDeprecated": false,
@@ -288,11 +329,11 @@
           "fields": null,
           "inputFields": [
             {
-              "name": "idMin",
-              "description": "id_min",
+              "name": "currentPage",
+              "description": "current_page",
               "type": {
                 "kind": "SCALAR",
-                "name": "String",
+                "name": "Int",
                 "ofType": null
               },
               "defaultValue": null,
@@ -304,7 +345,19 @@
               "description": "id_max",
               "type": {
                 "kind": "SCALAR",
-                "name": "String",
+                "name": "Int",
+                "ofType": null
+              },
+              "defaultValue": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "idMin",
+              "description": "id_min",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
                 "ofType": null
               },
               "defaultValue": null,
@@ -324,11 +377,11 @@
               "deprecationReason": null
             },
             {
-              "name": "sectionIdMin",
-              "description": "section_id_min",
+              "name": "sectionIdMax",
+              "description": "section_id_max",
               "type": {
                 "kind": "SCALAR",
-                "name": "String",
+                "name": "Int",
                 "ofType": null
               },
               "defaultValue": null,
@@ -336,11 +389,11 @@
               "deprecationReason": null
             },
             {
-              "name": "sectionIdMax",
-              "description": "section_id_max",
+              "name": "sectionIdMin",
+              "description": "section_id_min",
               "type": {
                 "kind": "SCALAR",
-                "name": "String",
+                "name": "Int",
                 "ofType": null
               },
               "defaultValue": null,
@@ -349,6 +402,59 @@
             }
           ],
           "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "Sentences",
+          "description": "Sentence",
+          "fields": [
+            {
+              "name": "pageInfo",
+              "description": "Pagination data",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "PageInfo",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "sentences",
+              "description": "Sentences",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "OBJECT",
+                      "name": "Sentence",
+                      "ofType": null
+                    }
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [
+
+          ],
           "enumValues": null,
           "possibleTypes": null
         },

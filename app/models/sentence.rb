@@ -23,21 +23,21 @@ class Sentence < ApplicationRecord
     end
   }
   scope :filter_by_keywords, lambda { |keywords|
-    return all unless keywords
+    if keywords.present?
+      each_keyword = keywords.split
+      columns = [
+        'sentences.english',
+        'sentences.japanese',
+        'words.english',
+        'words.japanese'
+      ]
 
-    each_keyword = keywords.split
-    columns = [
-      'sentences.english',
-      'sentences.japanese',
-      'words.english',
-      'words.japanese'
-    ]
-
-    # キーワード数に応じて可変長配列にする
-    queries = columns.map { |column| (["#{column} LIKE ?"] * each_keyword.length).join(' OR ') }
-    first_where = eager_load(:words).where(queries[0], *each_keyword.map { |word| "%#{word}%" })
-    queries.drop(1).inject(first_where) do |self_object, query|
-      self_object.or(eager_load(:words).where(query, *each_keyword.map { |word| "%#{word}%" }))
+      # キーワード数に応じて可変長配列にする
+      queries = columns.map { |column| (["#{column} LIKE ?"] * each_keyword.length).join(' OR ') }
+      first_where = eager_load(:words).where(queries[0], *each_keyword.map { |word| "%#{word}%" })
+      queries.drop(1).inject(first_where) do |self_object, query|
+        self_object.or(eager_load(:words).where(query, *each_keyword.map { |word| "%#{word}%" }))
+      end
     end
   }
 end

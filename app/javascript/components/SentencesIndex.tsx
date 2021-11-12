@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from "react"
-import { gql, useLazyQuery } from "@apollo/client"
-import { AllSentencesQuery, AllSentencesQueryVariables } from "../graphql/types"
+import React, { useState, useCallback } from "react"
+import { gql, OperationVariables, useQuery } from "@apollo/client"
+import { AllSentencesQuery } from "../graphql/types"
 import withProvider from "../graphqlProvider"
 import VisibilityMenu from "./VisiblityMenu"
 import SearchBox from "./SearchBox"
@@ -9,14 +9,20 @@ import SentenceWrapper from "./SentenceWrapper"
 const sentencesQuery = gql`
   query allSentences($attributes: SentenceSearchAttributes!) {
     sentences(attributes: $attributes) {
-      id
-      sectionId
-      english
-      japanese
-      words {
+      pageInfo {
+        currentPage
+        totalPages
+      }
+      sentences {
         id
-        japanese
+        sectionId
         english
+        japanese
+        words {
+          id
+          japanese
+          english
+        }
       }
     }
   }
@@ -28,24 +34,33 @@ const SentencesIndex = () => {
    */
   // OPTIMIZE: use object for attributes
   //  ? avoid infinite loops
-  const [sectionIdMin, setSectionIdMin] = useState("")
-  const [sectionIdMax, setSectionIdMax] = useState("")
-  const [idMin, setIdMin] = useState("")
-  const [idMax, setIdMax] = useState("")
+  const [currentPage, setCurrentPage] = useState(1)
+  const [sectionIdMin, setSectionIdMin] = useState(1)
+  const [sectionIdMax, setSectionIdMax] = useState(45)
+  const [idMin, setIdMin] = useState(1)
+  const [idMax, setIdMax] = useState(560)
   const [keywords, setKeywords] = useState("")
-  const handleAttributes = (e) => {
+  const handleAttributes = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrentPage(1)
     switch (e.target.name) {
+      case "reset":
+        setSectionIdMin(1)
+        setSectionIdMax(45)
+        setIdMin(1)
+        setIdMax(560)
+        setKeywords("")
+        break
       case "sectionIdMin":
-        setSectionIdMin(e.target.value)
+        setSectionIdMin(Number(e.target.value))
         break
       case "sectionIdMax":
-        setSectionIdMax(e.target.value)
+        setSectionIdMax(Number(e.target.value))
         break
       case "idMin":
-        setIdMin(e.target.value)
+        setIdMin(Number(e.target.value))
         break
       case "idMax":
-        setIdMax(e.target.value)
+        setIdMax(Number(e.target.value))
         break
       case "keywords":
         setKeywords(e.target.value)
@@ -58,29 +73,21 @@ const SentencesIndex = () => {
   /**
    * Load query
    */
-  const [getSentences, { loading, error, data }] = useLazyQuery<
+  const { loading, error, data } = useQuery<
     AllSentencesQuery,
-    AllSentencesQueryVariables
-  >(sentencesQuery)
-  const fetchSentences = (e = null) => {
-    // OPTIMIZE: click once to reset and refetch at the same time
-    if (e && e.target.value === "true") {
-      setSectionIdMin("")
-      setSectionIdMax("")
-      setIdMin("")
-      setIdMax("")
-      setKeywords("")
-    }
-    getSentences({
-      variables: {
-        attributes: { sectionIdMin, sectionIdMax, idMin, idMax, keywords },
+    OperationVariables
+  >(sentencesQuery, {
+    variables: {
+      attributes: {
+        currentPage,
+        sectionIdMin,
+        sectionIdMax,
+        idMin,
+        idMax,
+        keywords,
       },
-    })
-  }
-
-  // use only on componentDidMount, componentWillUnmount
-  // https://ja.reactjs.org/docs/hooks-reference.html#conditionally-firing-an-effect
-  useEffect(() => fetchSentences(), [])
+    },
+  })
 
   /**
    * Handle content options (visibility)
@@ -115,10 +122,11 @@ const SentencesIndex = () => {
           idMax,
           keywords,
           handleAttributes,
-          fetchSentences,
         }}
       />
-      <SentenceWrapper {...{ loading, error, data, visibilities }} />
+      <SentenceWrapper
+        {...{ loading, error, data, visibilities, currentPage, setCurrentPage }}
+      />
       <VisibilityMenu {...{ buttonLabels, visibilities, toggleVisibility }} />
     </div>
   )

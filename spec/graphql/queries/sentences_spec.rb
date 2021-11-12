@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Sentences', type: :request do
   subject do
-    post graphql_path, params: { query: query, variables: variables }
+    post graphql_path(format: :json), params: { query: query, variables: variables }
     JSON.parse(response.body)['data']
   end
 
@@ -11,19 +11,27 @@ RSpec.describe 'Sentences', type: :request do
   let!(:word) { create(:word, sentence: sentence) }
   let(:json_response) do
     {
-      'sentences' => [
-        'id' => sentence.id.to_param,
-        'sectionId' => sentence.section_id,
-        'english' => sentence.english,
-        'japanese' => sentence.japanese,
-        'words' => [
+      'sentences' => {
+        'pageInfo' => {
+          'currentPage' => 1,
+          'totalPages' => 1
+        },
+        'sentences' => [
           {
-            'id' => word.id.to_param,
-            'english' => word.english,
-            'japanese' => word.japanese
+            'id' => sentence.id.to_param,
+            'sectionId' => sentence.section_id,
+            'english' => sentence.english,
+            'japanese' => sentence.japanese,
+            'words' => [
+              {
+                'id' => word.id.to_param,
+                'english' => word.english,
+                'japanese' => word.japanese
+              }
+            ]
           }
         ]
-      ]
+      }
     }
   end
 
@@ -35,14 +43,20 @@ RSpec.describe 'Sentences', type: :request do
     <<~GQL
       query allSentences($attributes: SentenceSearchAttributes!) {
         sentences(attributes: $attributes) {
-          id
-          sectionId
-          english
-          japanese
-          words {
+          pageInfo {
+            currentPage
+            totalPages
+          }
+          sentences {
             id
-            japanese
+            sectionId
             english
+            japanese
+            words {
+              id
+              japanese
+              english
+            }
           }
         }
       }
@@ -52,12 +66,13 @@ RSpec.describe 'Sentences', type: :request do
   def variables
     {
       attributes: {
+        currentPage: 1,
         idMin: sentence.id,
         idMax: sentence.id,
-        sectionIdMin: '',
-        sectionIdMax: '',
-        keywords: ''
+        sectionIdMin: nil,
+        sectionIdMax: nil,
+        keywords: nil
       }
-    }
+    }.to_json
   end
 end

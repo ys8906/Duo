@@ -21,7 +21,7 @@ function Logo() {
 const Links: React.FC<Props> = ({ links }) => (
   <div className="header__links">
     {links.map(({ url, pageName }) => (
-      <a href={url} className="header__link">
+      <a href={url} className="header__link" key={pageName}>
         {pageName}
       </a>
     ))}

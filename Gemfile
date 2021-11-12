@@ -23,6 +23,7 @@ gem 'webpacker', '~> 5.0'
 gem 'bootsnap', '>= 1.4.4', require: false
 
 gem 'graphql', '~> 1.12', '>= 1.12.18'
+gem 'kaminari', '~> 1.2', '>= 1.2.1'
 gem 'react-rails', '~> 2.6', '>= 2.6.1'
 
 group :development, :test do

@@ -22,6 +22,7 @@ gem 'webpacker', '~> 5.0'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 
+gem 'devise', '~> 4.8'
 gem 'graphql', '~> 1.12', '>= 1.12.18'
 gem 'kaminari', '~> 1.2', '>= 1.2.1'
 gem 'react-rails', '~> 2.6', '>= 2.6.1'

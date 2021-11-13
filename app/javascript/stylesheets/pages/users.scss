@@ -1,0 +1,75 @@
+.users {
+  width: 480px;
+  margin: 32px auto 16px;
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 8px;
+    padding: 40px;
+    border: 1px solid $gray-300;
+    border-radius: 8px;
+  }
+
+  form {
+    width: 100%;
+  }
+
+  &__title {
+    width: 100%;
+    margin-bottom: 24px;
+    text-align: center;
+    font-size: 32px;
+  }
+
+  &__field {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+
+    .field_with_errors {
+      width: 100%;
+    }
+
+    input {
+      // prevent out of the container with width: 100% & padding
+      box-sizing: border-box;
+      width: 100%;
+      padding: 8px;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    input[type="checkbox"] {
+      width: auto;
+      margin-right: 8px;
+    }
+  }
+
+  &__actions {
+    text-align: center;
+
+    input {
+      padding: 8px;
+      background-color: $primary;
+      border-radius: 4px;
+      text-align: center;
+      font-size: 16px;
+      color: $white;
+      font-weight: bold;
+    }
+  }
+
+  &__links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__link {
+    margin: 8px;
+  }
+}

@@ -6,18 +6,18 @@ RSpec.describe Sentence, type: :model do
   end
 
   it 'is invalid without section_id' do
-    sentence = build_stubbed(:sentence)
-    expect(sentence).to be_invalid
+    model = build_stubbed(:sentence)
+    expect(model).to be_invalid
   end
 
   it 'is invalid without english' do
-    sentence = build_stubbed(:sentence, english: nil)
-    expect(sentence).to be_invalid
+    model = build_stubbed(:sentence, english: nil)
+    expect(model).to be_invalid
   end
 
   it 'is invalid without japanese' do
-    sentence = build_stubbed(:sentence, japanese: nil)
-    expect(sentence).to be_invalid
+    model = build_stubbed(:sentence, japanese: nil)
+    expect(model).to be_invalid
   end
 
   describe 'scope' do

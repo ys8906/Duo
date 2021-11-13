@@ -40,7 +40,8 @@ a {
   }
 }
 
-button {
+button,
+input[type="submit"] {
   background-color: transparent;
   border: none;
   cursor: pointer;
@@ -75,3 +76,4 @@ li {
 @import "components/search-box.scss";
 @import "components/utilities/loading.scss";
 @import "components/utilities/pagination.scss";
+@import "pages/users.scss";

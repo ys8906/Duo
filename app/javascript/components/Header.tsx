@@ -1,13 +1,8 @@
 import * as React from "react"
 import LOGO_URL from "../images/logo.png"
 
-interface Link {
-  pageName: string
-  url: string
-}
-
 interface Props {
-  links: [Link]
+  currentUser: object | null
 }
 
 function Logo() {
@@ -18,20 +13,50 @@ function Logo() {
   )
 }
 
-const Links: React.FC<Props> = ({ links }) => (
-  <div className="header__links">
-    {links.map(({ url, pageName }) => (
-      <a href={url} className="header__link" key={pageName}>
-        {pageName}
+function AccountLinks({ currentUser }: Props) {
+  if (currentUser) {
+    const authenticityToken = document
+      .querySelector("meta[name=csrf-token]")
+      .getAttribute("content")
+    return (
+      <form method="post" action="/users/sign_out">
+        <input type="hidden" name="_method" value="DELETE" />
+        <input
+          type="hidden"
+          name="authenticity_token"
+          value={authenticityToken}
+        />
+        <input type="submit" value="ログアウト" className="header__link" />
+      </form>
+    )
+  }
+  return (
+    <>
+      <a href="/users/sign_up" className="header__link">
+        ユーザー登録
       </a>
-    ))}
-  </div>
-)
+      <a href="/users/sign_in" className="header__link">
+        ログイン
+      </a>
+    </>
+  )
+}
 
-const Header: React.FC<Props> = ({ links }) => (
+function Links({ currentUser }: Props) {
+  return (
+    <div className="header__links">
+      <a href="/" className="header__link">
+        ホーム
+      </a>
+      <AccountLinks currentUser={currentUser} />
+    </div>
+  )
+}
+
+const Header: React.FC<Props> = ({ currentUser }) => (
   <div className="header__wrapper">
     <Logo />
-    <Links links={links} />
+    <Links currentUser={currentUser} />
   </div>
 )
 

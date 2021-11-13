@@ -9,17 +9,17 @@ RSpec.describe Word, type: :model do
   end
 
   it 'is invalid without sentence_id' do
-    word = build_stubbed(:word)
-    expect(word).to be_invalid
+    model = build_stubbed(:word)
+    expect(model).to be_invalid
   end
 
   it 'is invalid without english' do
-    word = build_stubbed(:word, english: nil)
-    expect(word).to be_invalid
+    model = build_stubbed(:word, english: nil)
+    expect(model).to be_invalid
   end
 
   it 'is invalid without japanese' do
-    word = build_stubbed(:word, japanese: nil)
-    expect(word).to be_invalid
+    model = build_stubbed(:word, japanese: nil)
+    expect(model).to be_invalid
   end
 end

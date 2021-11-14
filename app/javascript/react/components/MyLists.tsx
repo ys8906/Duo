@@ -93,13 +93,15 @@ function MyList({
       >
         {list.name}
       </button>
-      <button
-        type="button"
-        className="my-lists__list--button"
-        onClick={() => submitDeleteMyList(list.id)}
-      >
-        -
-      </button>
+      {currentMyListId !== listId && (
+        <button
+          type="button"
+          className="my-lists__list--button"
+          onClick={() => submitDeleteMyList(list.id)}
+        >
+          -
+        </button>
+      )}
     </li>
   )
 }

@@ -14,7 +14,9 @@ RSpec.describe 'CreateMyList', type: :request do
   let!(:my_list_count) { user.my_lists.count }
   let(:json_response) do
     {
-      'deleteMyList' => nil
+      'deleteMyList' => {
+        'myList' => nil
+      }
     }
   end
 

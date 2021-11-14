@@ -5,7 +5,7 @@ module Mutations
     argument :name, String, 'Creating my list', required: true
 
     field :errors, [String], description: 'errors', null: false
-    field :my_list, Types::Objects::MyListType, 'my_list', null: false
+    field :my_list, Types::Objects::MyListType, 'my_list', null: true
 
     def resolve(name:)
       my_list = context[:current_user].my_lists.build(name: name)

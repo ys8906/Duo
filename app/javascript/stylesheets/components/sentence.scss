@@ -3,9 +3,51 @@
   font-size: 24px;
   font-weight: bold;
 
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 32px;
+  }
+
   &__index {
-    padding: 16px 64px 16px 32px;
     color: $primary;
+  }
+
+  &__my-list {
+    position: relative;
+
+    &--button {
+      background-color: $s-light;
+      padding: 4px 8px;
+      border: 1px solid $black;
+      border-radius: 4px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+  }
+
+  &__my-list-select {
+    position: absolute;
+    right: 0;
+    width: 216px;
+    max-height: 400px;
+    overflow: auto;
+    border: 1px solid $black;
+    border-radius: 4px;
+    padding: 8px;
+    background-color: $gray-300;
+
+    &--row {
+      display: flex;
+      align-items: center;
+      font-size: 16px;
+    }
+
+    &--checkbox {
+      margin-right: 8px;
+      width: 16px;
+      height: 16px;
+    }
   }
 
   &__english {

@@ -32,3 +32,5 @@ Metrics/BlockLength:
 #   https://github.com/DmitryTsepelev/rubocop-graphql/issues/47
 GraphQL/ExtractInputType:
   Enabled: false
+GraphQL/ExtractType:
+  Enabled: false

@@ -46,3 +46,8 @@ arr = CSV.read('db/csv/words.csv', headers: true).map do |row|
 end
 Word.insert_all(arr, unique_by: :id)
 ActiveRecord::Base.connection.execute("ALTER SEQUENCE words_id_seq RESTART WITH #{Word.last.id + 1}")
+
+# User
+user = User.create(email: 'admin@example.com', name: 'Admin', password: 'password', password_confirmation: 'password')
+my_list = user.my_lists.create(name: 'My list')
+my_list.my_list_sentences.create(sentence_id: 1)

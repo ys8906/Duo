@@ -1,14 +1,28 @@
-import React, { useState, useCallback } from "react"
+import React, { createContext, useState, useCallback } from "react"
 import { gql, OperationVariables, useQuery } from "@apollo/client"
-import { AllSentencesQuery } from "../graphql/types"
-import withProvider from "../graphqlProvider"
-import VisibilityMenu from "./VisiblityMenu"
-import SearchBox from "./SearchBox"
-import SentenceWrapper from "./SentenceWrapper"
+import { AllSentencesQuery } from "../../../graphql/types"
+import withProvider from "../../../graphqlProvider"
+import VisibilityMenu from "../../components/VisiblityMenu"
+import SearchBox from "../../components/SearchBox"
+import SentenceWrapper from "../../components/SentenceWrapper"
+import MyLists from "../../components/MyLists"
 
 const sentencesQuery = gql`
   query allSentences($attributes: SentenceSearchAttributes!) {
     sentences(attributes: $attributes) {
+      currentUser {
+        id
+        email
+        myLists {
+          id
+          name
+          myListSentences {
+            id
+            sentenceId
+            myListId
+          }
+        }
+      }
       pageInfo {
         currentPage
         totalPages
@@ -28,13 +42,17 @@ const sentencesQuery = gql`
   }
 `
 
-const SentencesIndex = () => {
+export const UserContext = createContext(null)
+const SentencesIndex: React.FC = () => {
+  const [currentUser, setCurrentUser] = useState(null)
+
   /**
    * Query attributes
    */
   // OPTIMIZE: use object for attributes
   //  ? avoid infinite loops
   const [currentPage, setCurrentPage] = useState(1)
+  const [currentMyListId, setCurrentMyListId] = useState(0)
   const [sectionIdMin, setSectionIdMin] = useState(1)
   const [sectionIdMax, setSectionIdMax] = useState(45)
   const [idMin, setIdMin] = useState(1)
@@ -73,12 +91,13 @@ const SentencesIndex = () => {
   /**
    * Load query
    */
-  const { loading, error, data } = useQuery<
+  const { loading, error, data, refetch } = useQuery<
     AllSentencesQuery,
     OperationVariables
   >(sentencesQuery, {
     variables: {
       attributes: {
+        currentMyListId,
         currentPage,
         sectionIdMin,
         sectionIdMax,
@@ -86,6 +105,9 @@ const SentencesIndex = () => {
         idMax,
         keywords,
       },
+    },
+    onCompleted() {
+      setCurrentUser(data.sentences.currentUser)
     },
   })
 
@@ -113,22 +135,50 @@ const SentencesIndex = () => {
   }, [])
 
   return (
-    <div>
-      <SearchBox
-        {...{
-          sectionIdMin,
-          sectionIdMax,
-          idMin,
-          idMax,
-          keywords,
-          handleAttributes,
-        }}
-      />
-      <SentenceWrapper
-        {...{ loading, error, data, visibilities, currentPage, setCurrentPage }}
-      />
-      <VisibilityMenu {...{ buttonLabels, visibilities, toggleVisibility }} />
-    </div>
+    <UserContext.Provider value={currentUser}>
+      <div className="body-wrapper">
+        <div className="body-wrapper__left">
+          {currentUser && (
+            <MyLists
+              {...{
+                currentMyListId,
+                setCurrentMyListId,
+                refetch,
+                setCurrentUser,
+              }}
+            />
+          )}
+        </div>
+        <div className="body-wrapper__center">
+          <SearchBox
+            {...{
+              sectionIdMin,
+              sectionIdMax,
+              idMin,
+              idMax,
+              keywords,
+              handleAttributes,
+            }}
+          />
+          <SentenceWrapper
+            {...{
+              loading,
+              error,
+              data,
+              visibilities,
+              currentPage,
+              setCurrentPage,
+              refetch,
+              setCurrentUser,
+            }}
+          />
+          <VisibilityMenu
+            {...{ buttonLabels, visibilities, toggleVisibility }}
+          />
+        </div>
+        <div className="body-wrapper__right">{/* Component */}</div>
+      </div>
+    </UserContext.Provider>
   )
 }
 

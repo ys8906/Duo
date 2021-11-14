@@ -13,6 +13,7 @@ class Sentence < ApplicationRecord
       where(section_id: nil..max)
     end
   }
+
   scope :filter_by_id, lambda { |min, max|
     if min.present? && max.present?
       where(id: min..max)
@@ -22,6 +23,7 @@ class Sentence < ApplicationRecord
       where(id: nil..max)
     end
   }
+
   scope :filter_by_keywords, lambda { |keywords|
     if keywords.present?
       each_keyword = keywords.split
@@ -39,5 +41,9 @@ class Sentence < ApplicationRecord
         self_object.or(eager_load(:words).where(query, *each_keyword.map { |word| "%#{word}%" }))
       end
     end
+  }
+
+  scope :filter_by_my_list_id, lambda { |my_list_id|
+    where(id: MyList.find(my_list_id).sentences.ids) unless my_list_id.zero?
   }
 end

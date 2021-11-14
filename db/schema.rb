@@ -10,10 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_13_092314) do
+ActiveRecord::Schema.define(version: 2021_11_14_015036) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "my_list_sentences", force: :cascade do |t|
+    t.bigint "my_list_id", null: false
+    t.bigint "sentence_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["my_list_id"], name: "index_my_list_sentences_on_my_list_id"
+    t.index ["sentence_id"], name: "index_my_list_sentences_on_sentence_id"
+  end
+
+  create_table "my_lists", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_my_lists_on_user_id"
+  end
 
   create_table "sections", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
@@ -51,6 +68,9 @@ ActiveRecord::Schema.define(version: 2021_11_13_092314) do
     t.index ["sentence_id"], name: "index_words_on_sentence_id"
   end
 
+  add_foreign_key "my_list_sentences", "my_lists"
+  add_foreign_key "my_list_sentences", "sentences"
+  add_foreign_key "my_lists", "users"
   add_foreign_key "sentences", "sections"
   add_foreign_key "words", "sentences"
 end

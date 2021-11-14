@@ -3,6 +3,7 @@ module Types
     class SentenceSearchAttributes < Types::BaseInputObject
       description 'Attributes for filtering and sorting sentences'
 
+      argument :current_my_list_id, Int, 'current_my_list_id', required: false
       argument :current_page, Int, 'current_page', required: false
       argument :id_max, Int, 'id_max', required: false
       argument :id_min, Int, 'id_min', required: false

@@ -1,5 +1,5 @@
 import React from "react"
-import { AllSentencesQuery } from "../graphql/types"
+import { AllSentencesQuery } from "../../../graphql/types"
 
 interface Props {
   data: AllSentencesQuery
@@ -18,8 +18,8 @@ const Pagination: React.FC<Props> = ({ data, currentPage, setCurrentPage }) => {
     const { pageInfo } = data.sentences
     const list = []
 
-    let min
-    let max
+    let min: number
+    let max: number
     if (pageInfo.totalPages < 10) {
       ;[min, max] = [1, pageInfo.totalPages]
     } else if (currentPage < 10) {
@@ -37,7 +37,7 @@ const Pagination: React.FC<Props> = ({ data, currentPage, setCurrentPage }) => {
         <button
           type="button"
           className={`pagination__item${
-            currentPage === pageNum ? " current-page" : ""
+            currentPage === pageNum ? " selected" : ""
           }`}
           key={pageNum}
           value={pageNum}

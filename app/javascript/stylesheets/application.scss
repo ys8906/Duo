@@ -70,16 +70,18 @@ input:focus {
 
 ul,
 li {
+  margin: 0;
   padding: 0;
   list-style: none;
 }
 
 @import "body-wrapper.scss";
+@import "components/utilities/loading.scss";
+@import "components/utilities/pagination.scss";
 @import "components/header.scss";
 @import "components/sentence.scss";
 @import "components/sentence-wrapper.scss";
 @import "components/visibility-menu.scss";
 @import "components/search-box.scss";
-@import "components/utilities/loading.scss";
-@import "components/utilities/pagination.scss";
+@import "components/my-lists.scss";
 @import "pages/users.scss";

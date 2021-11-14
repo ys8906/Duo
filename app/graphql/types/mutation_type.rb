@@ -2,10 +2,9 @@ module Types
   class MutationType < Types::BaseObject
     description 'Mutation'
 
-    field :test_field, String, null: false,
-                               description: 'An example field added by the generator'
-    def test_field
-      'Hello World'
-    end
+    field :create_my_list, description: 'create_my_list', mutation: Mutations::CreateMyList
+    field :create_my_list_sentence, description: 'create_my_list_sentence', mutation: Mutations::CreateMyListSentence
+    field :delete_my_list, description: 'delete_my_list', mutation: Mutations::DeleteMyList
+    field :delete_my_list_sentence, description: 'delete_my_list_sentence', mutation: Mutations::DeleteMyListSentence
   end
 end

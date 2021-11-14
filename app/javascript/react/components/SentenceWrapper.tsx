@@ -1,7 +1,11 @@
-import { ApolloError } from "@apollo/client"
 import React from "react"
-import { AllSentencesQuery } from "../graphql/types"
-import Pagination from "./Pagination"
+import {
+  ApolloError,
+  OperationVariables,
+  ApolloQueryResult,
+} from "@apollo/client"
+import { AllSentencesQuery } from "../../graphql/types"
+import Pagination from "./utilities/Pagination"
 import Sentence from "./Sentence"
 import Loading from "./utilities/Loading"
 
@@ -12,6 +16,10 @@ interface Props {
   visibilities: object
   currentPage: number
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>
+  refetch: (
+    variables?: Partial<OperationVariables>
+  ) => Promise<ApolloQueryResult<AllSentencesQuery>>
+  setCurrentUser: React.Dispatch<React.SetStateAction<object>>
 }
 
 const SentenceWrapper: React.FC<Props> = ({
@@ -21,6 +29,8 @@ const SentenceWrapper: React.FC<Props> = ({
   visibilities,
   currentPage,
   setCurrentPage,
+  refetch,
+  setCurrentUser,
 }) => {
   let mainComponent
   if (loading) {
@@ -32,7 +42,10 @@ const SentenceWrapper: React.FC<Props> = ({
       mainComponent = (
         <div>
           {data.sentences.sentences.map((sentence) => (
-            <Sentence key={sentence.id} {...{ sentence, visibilities }} />
+            <Sentence
+              key={sentence.id}
+              {...{ sentence, visibilities, refetch, setCurrentUser }}
+            />
           ))}
           <Pagination {...{ data, currentPage, setCurrentPage }} />
         </div>

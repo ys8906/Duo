@@ -114,5 +114,22 @@ RSpec.describe Sentence, type: :model do
         it { is_expected.to eq 2 }
       end
     end
+
+    context 'with filter_by_my_list_id' do
+      subject { described_class.filter_by_my_list_id(my_list_id).count }
+
+      let(:my_list_id) { 0 }
+
+      it { is_expected.to eq described_class.count }
+
+      context 'with a my_list' do
+        let(:user) { create(:user) }
+        let(:my_list) { create(:my_list, user: user) }
+        let!(:my_list_sentence) { create(:my_list_sentence, my_list: my_list, sentence: Sentence.first) }
+        let(:my_list_id) { my_list.id }
+
+        it { is_expected.to eq described_class.where(id: my_list.sentences.ids).count }
+      end
+    end
   end
 end

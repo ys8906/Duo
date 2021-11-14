@@ -5,6 +5,7 @@ import withProvider from "../../../graphqlProvider"
 import VisibilityMenu from "../../components/VisiblityMenu"
 import SearchBox from "../../components/SearchBox"
 import SentenceWrapper from "../../components/SentenceWrapper"
+import MyLists from "../../components/MyLists"
 
 const sentencesQuery = gql`
   query allSentences($attributes: SentenceSearchAttributes!) {
@@ -15,6 +16,11 @@ const sentencesQuery = gql`
         myLists {
           id
           name
+          myListSentences {
+            id
+            sentenceId
+            myListId
+          }
         }
       }
       pageInfo {
@@ -46,6 +52,7 @@ const SentencesIndex: React.FC = () => {
   // OPTIMIZE: use object for attributes
   //  ? avoid infinite loops
   const [currentPage, setCurrentPage] = useState(1)
+  const [currentMyListId, setCurrentMyListId] = useState(0)
   const [sectionIdMin, setSectionIdMin] = useState(1)
   const [sectionIdMax, setSectionIdMax] = useState(45)
   const [idMin, setIdMin] = useState(1)
@@ -84,12 +91,13 @@ const SentencesIndex: React.FC = () => {
   /**
    * Load query
    */
-  const { loading, error, data } = useQuery<
+  const { loading, error, data, refetch } = useQuery<
     AllSentencesQuery,
     OperationVariables
   >(sentencesQuery, {
     variables: {
       attributes: {
+        currentMyListId,
         currentPage,
         sectionIdMin,
         sectionIdMax,
@@ -127,31 +135,50 @@ const SentencesIndex: React.FC = () => {
   }, [])
 
   return (
-    <div>
-      <UserContext.Provider value={currentUser}>
-        <SearchBox
-          {...{
-            sectionIdMin,
-            sectionIdMax,
-            idMin,
-            idMax,
-            keywords,
-            handleAttributes,
-          }}
-        />
-        <SentenceWrapper
-          {...{
-            loading,
-            error,
-            data,
-            visibilities,
-            currentPage,
-            setCurrentPage,
-          }}
-        />
-        <VisibilityMenu {...{ buttonLabels, visibilities, toggleVisibility }} />
-      </UserContext.Provider>
-    </div>
+    <UserContext.Provider value={currentUser}>
+      <div className="body-wrapper">
+        <div className="body-wrapper__left">
+          {currentUser && (
+            <MyLists
+              {...{
+                currentMyListId,
+                setCurrentMyListId,
+                refetch,
+                setCurrentUser,
+              }}
+            />
+          )}
+        </div>
+        <div className="body-wrapper__center">
+          <SearchBox
+            {...{
+              sectionIdMin,
+              sectionIdMax,
+              idMin,
+              idMax,
+              keywords,
+              handleAttributes,
+            }}
+          />
+          <SentenceWrapper
+            {...{
+              loading,
+              error,
+              data,
+              visibilities,
+              currentPage,
+              setCurrentPage,
+              refetch,
+              setCurrentUser,
+            }}
+          />
+          <VisibilityMenu
+            {...{ buttonLabels, visibilities, toggleVisibility }}
+          />
+        </div>
+        <div className="body-wrapper__right">{/* Component */}</div>
+      </div>
+    </UserContext.Provider>
   )
 }
 

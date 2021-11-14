@@ -1,0 +1,47 @@
+.my-lists {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 64px 16px 16px;
+
+  &__title {
+    display: flex;
+    justify-content: space-between;
+    width: 216px;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 20px;
+
+    &--plus {
+      font-size: 20px;
+    }
+  }
+
+  &__list-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__list {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px;
+
+    &:hover {
+      background-color: $background;
+    }
+
+    &--button {
+      cursor: pointer;
+      font-size: 20px;
+
+      &.selected {
+        color: $primary;
+      }
+    }
+  }
+
+  &__input {
+    font-size: 16px;
+  }
+}

@@ -15,8 +15,9 @@ module Types
                        .filter_by_keywords(attributes[:keywords])
                        .page(attributes[:current_page])
       {
+        current_user: context[:current_user],
+        page_info: page_info(result),
         sentences: result,
-        page_info: page_info(result)
       }
     end
 

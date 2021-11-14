@@ -12,6 +12,7 @@ RSpec.describe 'Sentences', type: :request do
   let(:json_response) do
     {
       'sentences' => {
+        'currentUser' => nil,
         'pageInfo' => {
           'currentPage' => 1,
           'totalPages' => 1
@@ -37,12 +38,63 @@ RSpec.describe 'Sentences', type: :request do
 
   it { is_expected.to include json_response }
 
+  context 'when a user with his/her list logs in' do
+    let(:user) { create(:user) }
+    let!(:my_list) { create(:my_list, user: user) }
+    let(:json_response_with_user) do
+      {
+        'sentences' => {
+          'currentUser' => {
+            'id' => user.id.to_param,
+            'email' => user.email,
+            'myLists' => [
+              {
+                'id' => my_list.id.to_param,
+                'name' => my_list.name
+              }
+            ]
+          },
+          'pageInfo' => {
+            'currentPage' => 1,
+            'totalPages' => 1
+          },
+          'sentences' => [
+            {
+              'id' => sentence.id.to_param,
+              'sectionId' => sentence.section_id,
+              'english' => sentence.english,
+              'japanese' => sentence.japanese,
+              'words' => [
+                {
+                  'id' => word.id.to_param,
+                  'english' => word.english,
+                  'japanese' => word.japanese
+                }
+              ]
+            }
+          ]
+        }
+      }
+    end
+
+    before { sign_in user }
+    it { is_expected.to include json_response_with_user }
+  end
+
   private
 
   def query
     <<~GQL
       query allSentences($attributes: SentenceSearchAttributes!) {
         sentences(attributes: $attributes) {
+          currentUser {
+            id
+            email
+            myLists {
+              id
+              name
+            }
+          }
           pageInfo {
             currentPage
             totalPages

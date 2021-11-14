@@ -1,5 +1,5 @@
-import * as React from "react"
-import LOGO_URL from "../images/logo.png"
+import React from "react"
+import LOGO_URL from "../../images/logo.png"
 
 interface Props {
   currentUser: object | null

@@ -16,11 +16,31 @@ export type Scalars = {
   ISO8601DateTime: any;
 };
 
+/** Current user data */
+export type CurrentUser = {
+  __typename?: 'CurrentUser';
+  /** User email */
+  email: Scalars['String'];
+  /** User ID */
+  id: Scalars['ID'];
+  /** My lists */
+  myLists?: Maybe<Array<MyList>>;
+};
+
 /** Mutation */
 export type Mutation = {
   __typename?: 'Mutation';
   /** An example field added by the generator */
   testField: Scalars['String'];
+};
+
+/** My list for sentences */
+export type MyList = {
+  __typename?: 'MyList';
+  /** My list ID */
+  id: Scalars['ID'];
+  /** My list name */
+  name: Scalars['String'];
 };
 
 /** Pagination data */
@@ -83,6 +103,8 @@ export type SentenceSearchAttributes = {
 /** Sentence */
 export type Sentences = {
   __typename?: 'Sentences';
+  /** Current user data */
+  currentUser?: Maybe<CurrentUser>;
   /** Pagination data */
   pageInfo?: Maybe<PageInfo>;
   /** Sentences */
@@ -109,12 +131,20 @@ export type AllSentencesQueryVariables = Exact<{
 }>;
 
 
-export type AllSentencesQuery = { __typename?: 'Query', sentences: { __typename?: 'Sentences', pageInfo?: { __typename?: 'PageInfo', currentPage: number, totalPages: number } | null | undefined, sentences: Array<{ __typename?: 'Sentence', id: string, sectionId: number, english: string, japanese: string, words: Array<{ __typename?: 'Word', id: string, japanese: string, english: string }> }> } };
+export type AllSentencesQuery = { __typename?: 'Query', sentences: { __typename?: 'Sentences', currentUser?: { __typename?: 'CurrentUser', id: string, email: string, myLists?: Array<{ __typename?: 'MyList', id: string, name: string }> | null | undefined } | null | undefined, pageInfo?: { __typename?: 'PageInfo', currentPage: number, totalPages: number } | null | undefined, sentences: Array<{ __typename?: 'Sentence', id: string, sectionId: number, english: string, japanese: string, words: Array<{ __typename?: 'Word', id: string, japanese: string, english: string }> }> } };
 
 
 export const AllSentencesDocument = gql`
     query allSentences($attributes: SentenceSearchAttributes!) {
   sentences(attributes: $attributes) {
+    currentUser {
+      id
+      email
+      myLists {
+        id
+        name
+      }
+    }
     pageInfo {
       currentPage
       totalPages

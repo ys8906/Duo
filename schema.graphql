@@ -1,4 +1,24 @@
 """
+Current user data
+"""
+type CurrentUser {
+  """
+  User email
+  """
+  email: String!
+
+  """
+  User ID
+  """
+  id: ID!
+
+  """
+  My lists
+  """
+  myLists: [MyList!]
+}
+
+"""
 An ISO 8601-encoded datetime
 """
 scalar ISO8601DateTime
@@ -11,6 +31,21 @@ type Mutation {
   An example field added by the generator
   """
   testField: String!
+}
+
+"""
+My list for sentences
+"""
+type MyList {
+  """
+  My list ID
+  """
+  id: ID!
+
+  """
+  My list name
+  """
+  name: String!
 }
 
 """
@@ -122,6 +157,11 @@ input SentenceSearchAttributes {
 Sentence
 """
 type Sentences {
+  """
+  Current user data
+  """
+  currentUser: CurrentUser
+
   """
   Pagination data
   """

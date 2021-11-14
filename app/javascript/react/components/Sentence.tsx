@@ -1,4 +1,5 @@
-import React, { useState, useCallback } from "react"
+import React, { useState, useCallback, useContext } from "react"
+import { UserContext } from "../pages/sentences/index"
 
 interface WordType {
   english: string
@@ -34,6 +35,7 @@ const Word: React.FC<WordProps> = ({ word, showTextOrHidden }) => (
 )
 
 const Sentence: React.FC<SentenceProps> = ({ sentence, visibilities }) => {
+  const user = useContext(UserContext)
   const [isWordOpen, setWordOpen] = useState(false)
   const toggleWordOpen = useCallback(() => {
     setWordOpen((prevState) => !prevState)
@@ -48,8 +50,15 @@ const Sentence: React.FC<SentenceProps> = ({ sentence, visibilities }) => {
 
   return (
     <div className="sentence">
-      <div className="sentence__index">
-        Section {sentence.sectionId} | {sentence.id}
+      <div className="sentence__header">
+        <div className="sentence__index">
+          Section {sentence.sectionId} | {sentence.id}
+        </div>
+        {user && (
+          <button type="button" className="sentence__my-list-button">
+            マイリストに登録
+          </button>
+        )}
       </div>
       <div className="sentence__english">
         {showTextOrHidden(sentence, "sentence", "english")}

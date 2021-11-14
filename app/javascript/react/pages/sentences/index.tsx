@@ -1,14 +1,22 @@
-import React, { useState, useCallback } from "react"
+import React, { createContext, useState, useCallback } from "react"
 import { gql, OperationVariables, useQuery } from "@apollo/client"
-import { AllSentencesQuery } from "../graphql/types"
-import withProvider from "../graphqlProvider"
-import VisibilityMenu from "./VisiblityMenu"
-import SearchBox from "./SearchBox"
-import SentenceWrapper from "./SentenceWrapper"
+import { AllSentencesQuery } from "../../../graphql/types"
+import withProvider from "../../../graphqlProvider"
+import VisibilityMenu from "../../components/VisiblityMenu"
+import SearchBox from "../../components/SearchBox"
+import SentenceWrapper from "../../components/SentenceWrapper"
 
 const sentencesQuery = gql`
   query allSentences($attributes: SentenceSearchAttributes!) {
     sentences(attributes: $attributes) {
+      currentUser {
+        id
+        email
+        myLists {
+          id
+          name
+        }
+      }
       pageInfo {
         currentPage
         totalPages
@@ -28,7 +36,10 @@ const sentencesQuery = gql`
   }
 `
 
-const SentencesIndex = () => {
+export const UserContext = createContext(null)
+const SentencesIndex: React.FC = () => {
+  const [currentUser, setCurrentUser] = useState(null)
+
   /**
    * Query attributes
    */
@@ -87,6 +98,9 @@ const SentencesIndex = () => {
         keywords,
       },
     },
+    onCompleted() {
+      setCurrentUser(data.sentences.currentUser)
+    },
   })
 
   /**
@@ -114,20 +128,29 @@ const SentencesIndex = () => {
 
   return (
     <div>
-      <SearchBox
-        {...{
-          sectionIdMin,
-          sectionIdMax,
-          idMin,
-          idMax,
-          keywords,
-          handleAttributes,
-        }}
-      />
-      <SentenceWrapper
-        {...{ loading, error, data, visibilities, currentPage, setCurrentPage }}
-      />
-      <VisibilityMenu {...{ buttonLabels, visibilities, toggleVisibility }} />
+      <UserContext.Provider value={currentUser}>
+        <SearchBox
+          {...{
+            sectionIdMin,
+            sectionIdMax,
+            idMin,
+            idMax,
+            keywords,
+            handleAttributes,
+          }}
+        />
+        <SentenceWrapper
+          {...{
+            loading,
+            error,
+            data,
+            visibilities,
+            currentPage,
+            setCurrentPage,
+          }}
+        />
+        <VisibilityMenu {...{ buttonLabels, visibilities, toggleVisibility }} />
+      </UserContext.Provider>
     </div>
   )
 }
